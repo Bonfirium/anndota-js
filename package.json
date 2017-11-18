@@ -1,0 +1,22 @@
+{
+  "name": "anndota-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:fit4code/anndota-js.git"
+  },
+  "author": "NickLatkovich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fit4code/anndota-js/issues"
+  },
+  "homepage": "https://github.com/fit4code/anndota-js#readme",
+  "dependencies": {
+    "util": "^0.10.3"
+  }
+}
