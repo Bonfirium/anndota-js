@@ -124,9 +124,4 @@ class Ann {
     }
 }
 
-let ann = new Ann(2, [ 2 ], 1, false)
-console.log(util.inspect(ann, { colors: true, depth: null }))
-let res = ann.Run([0.78, 0.32])
-console.log(res)
-ann.Learn([0.32])
-console.log(util.inspect(ann, { colors: true, depth: null }))
+module.exports = Ann
