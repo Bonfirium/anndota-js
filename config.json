@@ -1,0 +1,6 @@
+{
+	"pathDataset": {
+		"games": "../anndota-datasets/data/games.json",
+		"heroes": "../anndota-datasets/data/heroes.json"
+	}
+}

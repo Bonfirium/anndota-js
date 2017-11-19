@@ -1,7 +1,5 @@
 'use strict'
 
-const util = require('util')
-
 class Ann {
     constructor(input_neurons_count, hidden_levels_dimensions, output_neurons_count, use_bias_neurons = true) {
         this.weights = [ ]
@@ -49,7 +47,12 @@ class Ann {
                 for (let j = 0, jTo =
                     (i == hidden_levels_dimensions.length ? output_neurons_count : hidden_levels_dimensions[i]);
                     j < jTo; j++) {
-                    this.bias_neurons[i].push(Math.random( ) - 0.5)
+                    this.bias_neurons[i].push({
+                        "value": 0,
+                        "gradient": 0,
+                        "delta": 0,
+                        "weight": Math.random( ) - 0.5
+                    })
                 }
             }
         }
@@ -78,7 +81,7 @@ class Ann {
                     this.inputs[i][j] += this.outputs[iPrev][k] * this.weights[iPrev][k][j]
                 }
                 if (this.bias_neurons) {
-                    this.inputs[i][j] += this.bias_neurons[i - 1][j]
+                    this.inputs[i][j] -= this.bias_neurons[iPrev][j].value
                 }
                 this.outputs[i][j] = run_function(this.inputs[i][j])
             }
@@ -86,15 +89,22 @@ class Ann {
         return this.outputs[this.LastLayer]
     }
 
+    Start(input_signals, ideal_results, learning_speed = 0.7, learning_moment = 0.3, run_function = Ann.Sigmoid,
+        learn_function = Ann.SigmoidDerivativeSimplified) {
+        let result = this.Run(input_signals, run_function)
+        this.Learn(ideal_results, learning_speed, learning_moment, learn_function)
+        return result;
+    }
+
     Learn(ideal_results, learning_speed = 0.7, learning_moment = 0.3,
         learn_function = Ann.SigmoidDerivativeSimplified) {
         for (let i = 0; i < this.inputs[this.LastLayer].length; i++) {
             this.deltas[this.LastLayer][i] =
-                (ideal_results[i] - this.outputs[this.LastLayer][i]) * learn_function(this.inputs[this.LastLayer][i])
+                (ideal_results[i] - this.outputs[this.LastLayer][i]) * learn_function(this.outputs[this.LastLayer][i])
         }
         for (let i = this.LastLayer - 1; i > 0; i--) {
             for (let j = 0; j < this.inputs[i].length; j++) {
-                this.deltas[i][j] = learn_function(this.inputs[i][j])
+                this.deltas[i][j] = learn_function(this.outputs[i][j])
                 let sum = 0
                 for (let k = 0, iNext = i + 1; k < this.inputs[iNext].length; k++) {
                     sum += this.weights[i][j][k] * this.deltas[iNext][k]
@@ -110,6 +120,16 @@ class Ann {
                         learning_speed * this.gradients[i][j][k] + learning_moment * this.changing[i][j][k]
                     this.changing[i][j][k] = newChanging
                     this.weights[i][j][k] += newChanging
+                }
+            }
+        }
+        if (this.bias_neurons) {
+            for (let i = 0, iNext = 1; i < this.bias_neurons.length; i = iNext, iNext++) {
+                for (let j = 0; j < this.bias_neurons[i].length; j++) {
+                    let bias = this.bias_neurons[i][j]
+                    bias.gradient = -this.deltas[iNext][j]
+                    bias.delta = learning_speed * bias.gradient + learning_moment * bias.delta
+                    bias.weight += bias.delta
                 }
             }
         }
