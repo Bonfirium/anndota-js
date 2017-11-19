@@ -1,7 +1,8 @@
 'use strict'
 
 class Ann {
-    constructor(input_neurons_count, hidden_levels_dimensions, output_neurons_count, use_bias_neurons = true) {
+    constructor(input_neurons_count, hidden_levels_dimensions, output_neurons_count, use_bias_neurons = true,
+        random = Math) {
         this.weights = [ ]
         this.changing = [ ]
         this.gradients = [ ]
@@ -26,7 +27,7 @@ class Ann {
                 for (let k = 0, kTo =
                     (i == hidden_levels_dimensions.length ? output_neurons_count : hidden_levels_dimensions[i]);
                     k < kTo; k++) {
-                    this.weights[i][j].push(Math.random( ) - 0.5)
+                    this.weights[i][j].push(random.random( ) - 0.5)
                     this.changing[i][j].push(0)
                     this.gradients[i][j].push(0)
                 }
@@ -51,7 +52,7 @@ class Ann {
                         "value": 0,
                         "gradient": 0,
                         "delta": 0,
-                        "weight": Math.random( ) - 0.5
+                        "weight": random.random( ) - 0.5
                     })
                 }
             }
@@ -132,6 +133,13 @@ class Ann {
                     bias.weight += bias.delta
                 }
             }
+        }
+    }
+
+    toJSON( ) {
+        return {
+            "weights": this.weights,
+            "bias": this.bias_neurons
         }
     }
 

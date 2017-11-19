@@ -18,6 +18,7 @@
   "homepage": "https://github.com/fit4code/anndota-js#readme",
   "dependencies": {
     "numeral": "^2.0.6",
+    "random-seed": "^0.3.0",
     "util": "^0.10.3"
   }
 }

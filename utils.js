@@ -8,6 +8,14 @@ class Utils {
         }
         return str
     }
+    static getRandomHash(length = 64) {
+        let result = ''
+        var possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        for (let i = 0; i < length; i++) {
+            result += possibleChars.charAt(Math.floor(Math.random( ) * possibleChars.length))
+        }
+        return result
+    }
 
     constructor( ) {
         throw 'static class'
