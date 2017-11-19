@@ -8,7 +8,7 @@ const games = require(config.pathDataset.games)
 const heroes = require(config.pathDataset.heroes)
 const Utils = require('./utils')
 
-let checker_interval = Math.floor(Math.random( ) * 1000) + 500
+let checker_interval = 1000//Math.floor(Math.random( ) * 1000) + 500
 
 const gamesCount = Object.keys(games).length
 
@@ -24,7 +24,7 @@ let maxRA = 0
 for (let repeat = 0; repeat < 2; repeat++) {
 
     for (let gameID in games) {
-        if (gameID < 3535000223) continue
+        // if (gameID < 3535000223) continue
         let game = games[gameID]
         let input = [ ]
         for (let i = 0; i < ann.InputsCount; i++) {
@@ -39,7 +39,7 @@ for (let repeat = 0; repeat < 2; repeat++) {
             continue
         }
         let answerForLearning = 0.5 + (game.winner == 'radiant' ? 1 : -1) * (game.advantage - 0.5)
-        let realAnswer = ann.Start(input, [ answerForLearning ], 1.5, 0.7)[0]
+        let realAnswer = ann.Start(input, [ answerForLearning ], 0.7, 0.3)[0]
         // console.log(realAnswer)
         // let realAnswer = ann.Run(input)[0]
         // console.log(ann)
@@ -61,7 +61,7 @@ for (let repeat = 0; repeat < 2; repeat++) {
             console.log(Utils.allignRight(testNumber + '.', 8) + str)
             iter = 0
             rightAnswers = 0
-            checker_interval = Math.floor(Math.random( ) * 1000) + 500
+            checker_interval = 1000//Math.floor(Math.random( ) * 1000) + 500
         }
     }
 }
